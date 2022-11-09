@@ -18,6 +18,8 @@ class Player(pygame.sprite.Sprite):
         self.HP = 100
 
     def update(self):
+
+        print(self.HP)
         if self.HP <= 0:
             self.kill()
 
@@ -56,7 +58,10 @@ class Player(pygame.sprite.Sprite):
         screen.blit(self.image, self.rect)
 
     def isColliding(self, sprite) -> bool:
-        return self.rect.colliderect(sprite.rect)
+        if self.HP <= 0:
+            return False
+        else:
+            return self.rect.colliderect(sprite.rect)
 
     def jump(self, doRanMovement):
         if self.onGround:
@@ -73,5 +78,5 @@ class Player(pygame.sprite.Sprite):
         if self.onGround:
             pass
         else:
-            if doRanMovement: self.Yvel = random.randint(6, 4)
+            if doRanMovement: self.Yvel = random.randint(4, 6)
             else: self.Yvel = 5

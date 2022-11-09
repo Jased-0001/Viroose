@@ -2,6 +2,7 @@ import pygame
 import sys
 import random
 import json
+import os
 
 import game
 import settingsmenu
@@ -53,6 +54,13 @@ clock = pygame.time.Clock()
 p1Rand = (random.randint(25, 200), random.randint(25, 200))
 p2Rand = (random.randint(25, 200), random.randint(25, 200))
 
+if meta["settings"]["menuPlayerSpin"]:
+    #random rotation
+    RTT1 = random.randint(0, 1)
+    RTT2 = random.randint(0, 1)
+    rotation1 = random.randint(-360, 360)
+    rotation2 = random.randint(-360, 360)
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -82,7 +90,7 @@ while True:
     text_rect = text_surface.get_rect()
     text_rect.center = (320, 55)
     #display MOTD on bottom left in yellow
-    ComicSans = pygame.font.SysFont("Comic Sans MS", 20, bold=True)
+    ComicSans = pygame.font.SysFont("Comic Sans MS", 20)
     MOTD_surface = ComicSans.render(MOTD, True, (255,255,0))
     MOTD_rect = MOTD_surface.get_rect()
     MOTD_rect.center = (320, 450)
@@ -97,6 +105,35 @@ while True:
     player2 = pygame.transform.scale(player2, p2Rand)
     player2_rect = player2.get_rect()
     player2_rect.center = (100, 240)
+
+    #spin player1 and player2
+    #if rotation is negative, it will spin clockwise
+    #if rotation is positive, it will spin counter-clockwise
+    if meta["settings"]["menuPlayerSpin"]:
+        if RTT1 == 0:
+            rotation1 -= 1
+        else:
+            rotation1 += 1
+
+        if RTT2 == 0:
+            rotation2 -= 1
+        else:
+            rotation2 += 1
+
+        #if rotation is greater than 360, reset it to 0
+        if rotation1 > 360:
+            rotation1 = 0
+        if rotation2 > 360:
+            rotation2 = 0
+        if rotation1 < -360:
+            rotation1 = 0
+        if rotation2 < -360:
+            rotation2 = 0
+
+        player1 = pygame.transform.rotate(player1, rotation1)
+        player2 = pygame.transform.rotate(player2, rotation2)
+    else:
+        pass
 
     BG.draw(screen)
     buttons.draw(screen)

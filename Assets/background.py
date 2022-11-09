@@ -1,4 +1,6 @@
 import pygame
+import os
+import sys
 
 class BG(pygame.sprite.Sprite):
     def __init__(self):

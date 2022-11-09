@@ -4,6 +4,7 @@ def Run() -> None:
         import sys
         import pyautogui
         import json
+        import os
 
         import Assets.background
         import Assets.button
@@ -65,9 +66,17 @@ def Run() -> None:
                 with open("meta.json", "w") as f:
                     json.dump(meta, f, indent=4)
 
+            def setMenuPlayerSpin():
+                meta["settings"]["menuPlayerSpin"] = not meta["settings"]["menuPlayerSpin"]
+                with open("meta.json", "w") as f:
+                    json.dump(meta, f, indent=4)
+
             #row 1
             ranMoveBttn = buttonGroup.add(Assets.button.Button(text=f"Random Movement: {meta['settings']['randomMovement']}", xy=(210, 120), image="gfx/bttn.png", text_size=10, action=lambda: setRanMove()))
-            Nonebutton = buttonGroup.add(Assets.button.Button(text="none", xy=(210, 240), image="gfx/bttn.png", text_size=30))
+            menuPlayerRotation = buttonGroup.add(Assets.button.Button(text=f"Menu Player Spins: {meta['settings']['menuPlayerSpin']}", xy=(210, 240), image="gfx/bttn.png", text_size=10, action=lambda: setMenuPlayerSpin()))
+            #restart needed warning
+            RestartNeeded = pygame.font.SysFont("Verdana", 10).render("Restart needed", True, (255, 0, 0))
+            #
             Nonebutton = buttonGroup.add(Assets.button.Button(text="none", xy=(210, 360), image="gfx/bttn.png", text_size=32))
 
             #row 2
@@ -79,6 +88,7 @@ def Run() -> None:
             bg.draw(screen)
 
             buttonGroup.draw(screen)
+            screen.blit(RestartNeeded, (200, 260))
             
             pygame.display.flip()
             clock.tick(60)
