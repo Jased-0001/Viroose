@@ -1,7 +1,7 @@
 import pygame
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, x, y, direction):
+    def __init__(self, x, y, direction, screen):
         super().__init__()
         self.image = pygame.image.load("gfx/bullet.png")
         self.rect = self.image.get_rect()
@@ -9,8 +9,4 @@ class Bullet(pygame.sprite.Sprite):
         self.direction = direction
         self.speed = 10
 
-    def update(self):
-        self.rect.x += self.speed * self.direction
-
-    def draw(self, screen):
         screen.blit(self.image, self.rect)

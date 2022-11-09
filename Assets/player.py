@@ -58,21 +58,20 @@ class Player(pygame.sprite.Sprite):
     def isColliding(self, sprite) -> bool:
         return self.rect.colliderect(sprite.rect)
 
-    def jump(self):
+    def jump(self, doRanMovement):
         if self.onGround:
-            self.Yvel = random.randint(-6, -4)
+            if doRanMovement: self.Yvel = random.randint(-6, -4)
+            else: self.Yvel = -5
             self.onGround = False
             self.rect.y -= 8
         else:
-            self.Yvel = random.randint(-3, -2)
+            if doRanMovement: self.Yvel = random.randint(-3, -2)
+            else: self.Yvel = -3
 
 
-    def fall(self):
+    def fall(self, doRanMovement):
         if self.onGround:
             pass
         else:
-            self.Yvel = random.randint(-6, -4) * -1
-
-    def fire(self):
-        #spawn bullet
-        Assets.bullet.Bullet(self.rect.x, self.rect.y, 1)
+            if doRanMovement: self.Yvel = random.randint(6, 4)
+            else: self.Yvel = 5

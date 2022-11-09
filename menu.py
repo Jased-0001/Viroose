@@ -1,13 +1,21 @@
 import pygame
 import sys
 import random
+import json
 
 import game
+import settingsmenu
 
 import Assets.button
 import Assets.background
 
-drpEnabled = False
+with open("meta.json") as f:
+    meta = json.load(f)
+        
+version = meta["version"]
+
+drpEnabled = meta["settings"]["DiscordRichPresence"]
+
 try:
     import pypresence
 except:
@@ -16,7 +24,7 @@ except:
 
 #discord rich presence
 if drpEnabled:
-    client_id = "1039669275973144586"  # Fake ID, put your real one here
+    client_id = "1039669275973144586"
     RPC = pypresence.Presence(client_id)  # Initialize the client class
     RPC.connect() # Start the handshake loop
 
@@ -24,6 +32,8 @@ if drpEnabled:
     RPC.update(state="In Menu", details="smiley circle", large_image="512_player", large_text="Viroose")
 
 pygame.init()
+
+inGame = False
 
 #get random MOTD
 MOTD = open("MOTD.txt", "r")
@@ -62,8 +72,8 @@ while True:
                         button.doAction()
 
     buttons = pygame.sprite.Group()
-    playbutton = buttons.add(Assets.button.Button(text="Play", xy=(320, 130), image="gfx/bttn.png", text_size=32, action=lambda: game.Run(drpEnabled)))
-    Nonebutton = buttons.add(Assets.button.Button("None", (320, 240), 150, 75, "gfx/bttn.png", (0,0,0), 32))
+    playbutton = buttons.add(Assets.button.Button(text="Play", xy=(320, 130), image="gfx/bttn.png", text_size=32, action=lambda: game.Run()))
+    Nonebutton = buttons.add(Assets.button.Button(text="Settings", xy=(320, 240), image="gfx/bttn.png", text_size=30, action=lambda: settingsmenu.Run()))
     exitbutton = buttons.add(Assets.button.Button(text="Exit", xy=(320, 350), image="gfx/bttn.png", text_size=32, action=lambda: sys.exit()))
 
     #draw name on right side
@@ -101,8 +111,8 @@ while True:
 
     #set game title to show FPS
     #spf = seconds per frame
-    pygame.display.set_caption("Viroose v0.0 Main Menu - FPS: " + str(int(clock.get_fps())) + " | Delta Time: " + str(clock.get_time() / 1000) + "s" )
+    pygame.display.set_caption(f"Viroose {version} - FPS: {str(int(clock.get_fps()))} | Delta Time: {str(clock.get_time() / 1000)}s")
 
     if drpEnabled:
         #set discord rich presence
-        RPC.update(state="In Menu", details="smiley circle", large_image="512_player", large_text="Viroose")
+        RPC.update(details="smiley circle", large_image="512_player", large_text="Viroose")

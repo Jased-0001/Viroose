@@ -1,0 +1,7 @@
+{
+    "version": "beta 1",
+    "settings": {
+        "DiscordRichPresence": false,
+        "randomMovement": true
+    }
+}

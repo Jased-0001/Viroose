@@ -1,7 +1,7 @@
 import pygame
 
 class Button(pygame.sprite.Sprite):
-    def __init__(self,text="None",xy =(0,0),width=150,height=75,image="gfx/player.png",text_color=(0,0,0),text_size=16,action=lambda: print("None")):
+    def __init__(self,text="None",xy =(0,0),width=150,height=75,image="gfx/bttn.png",text_color=(0,0,0),text_size=16,action=lambda: print("None")):
         pygame.sprite.Sprite.__init__(self)
         #make button
         #get image
@@ -14,6 +14,7 @@ class Button(pygame.sprite.Sprite):
         self.text_surface = self.font.render(text, True, text_color)
         self.text_rect = self.text_surface.get_rect()
         self.text_rect.center = (width/2, height/2)
+        self.text = text
 
         #add text to button
         self.image.blit(self.text_surface, self.text_rect)

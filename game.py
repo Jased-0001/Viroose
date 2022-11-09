@@ -1,14 +1,26 @@
-def Run(drpEnabled) -> None:
+def Run() -> None:
     try:
         import pygame
         import sys
         import pyautogui
+        import json
 
         import Assets.player
         import Assets.ground
         import Assets.background
 
-        import pypresence
+        with open("meta.json") as f:
+            meta = json.load(f)
+            
+        version = meta["version"]
+
+        drpEnabled = meta["settings"]["DiscordRichPresence"]
+
+        try:
+            import pypresence
+        except:
+            print("pypresence not installed, disabling Discord Rich Presence")
+            drpEnabled = False
 
         if drpEnabled:
             client_id = "1039669275973144586"
@@ -44,7 +56,7 @@ def Run(drpEnabled) -> None:
                     #movement
                     if event.key == pygame.K_SPACE:
                         #jump
-                        player.jump()
+                        player.jump(meta["settings"]["randomMovement"])
 
                     if event.key == pygame.K_a:
                         #add -5 to x velocity
@@ -56,11 +68,11 @@ def Run(drpEnabled) -> None:
 
                     if event.key == pygame.K_w:
                         #jump
-                        player.jump()
+                        player.jump(meta["settings"]["randomMovement"])
 
                     if event.key == pygame.K_s:
                         #fall 
-                        player.fall()
+                        player.fall(meta["settings"]["randomMovement"])
 
                     #when clicking LMB, fire bullet
                     if event.key == pygame.K_LCTRL:
@@ -84,7 +96,7 @@ def Run(drpEnabled) -> None:
             clock.tick(60)
 
             #set game title to show FPS
-            pygame.display.set_caption("Viroose v0.0 Game - FPS: " + str(int(clock.get_fps())) + " | Delta Time: " + str(clock.get_time() / 1000) + "s" )
+            pygame.display.set_caption(f"Viroose {version} - FPS: {str(int(clock.get_fps()))} | Delta Time: {str(clock.get_time() / 1000)}s")
 
             if drpEnabled:
                 RPC.update(state="Playing. . .", details="smiley circle", large_image="512_player", large_text="Viroose")
@@ -94,4 +106,4 @@ def Run(drpEnabled) -> None:
         pass
 
 if __name__ == "__main__":
-    Run(False)
+    Run()
